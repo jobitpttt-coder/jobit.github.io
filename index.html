@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated RGB Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #ff0080, #7928ca, #0070f3, #00dfd8);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-200px) translateX(-50px); }
+            75% { transform: translateY(-100px) translateX(100px); }
+        }
+
+        /* Glass effect container */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 15px 30px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #00dfd8;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0080, #00dfd8);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ff0080, #7928ca, #0070f3, #00dfd8);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rgbText 3s linear infinite;
+        }
+
+        @keyframes rgbText {
+            to { background-position: 200% center; }
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #ff0080, #7928ca);
+            color: white;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(90deg, #00dfd8, #7928ca);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .education-timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .education-card {
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .education-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0, 223, 216, 0.3);
+        }
+
+        .edu-year {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(90deg, #ff0080, #7928ca);
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .education-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .skill-badge {
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff0080, #7928ca, #0070f3, #00dfd8);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .skill-badge:hover::before {
+            opacity: 0.2;
+        }
+
+        .skill-badge span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00dfd8;
+            box-shadow: 0 0 20px rgba(0, 223, 216, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        /* RGB Border Animation */
+        .rgb-border {
+            position: relative;
+            padding: 3px;
+            background: linear-gradient(45deg, #ff0080, #7928ca, #0070f3, #00dfd8);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            border-radius: 20px;
+        }
+
+        .rgb-border-inner {
+            background: #0a0a0a;
+            border-radius: 17px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    
+    <nav class="glass">
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#certificates">Certificates</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>JOBIT P THOMAS</h1>
+            <p>MCA Aspirant</p>
+            <div class="hero-info">
+                <p style="font-size: 1rem; color: #888; margin-top: 10px;">Born: July 16, 2003</p>
+                <p style="font-size: 1rem; color: #888; margin-top: 5px;">Parackal (H), Kolakkad (PO), Kannur, Kerala - 670673</p>
+            </div>
+            <button class="cta-button" style="margin-top: 30px;">View My Work</button>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>About Me</h2>
+        <div class="glass" style="padding: 40px; max-width: 900px; margin: 0 auto;">
+            <p style="line-height: 1.8; color: #ccc; text-align: justify;">
+                Driven by a passion for continuous learning, I am seeking a role where I can enhance my skills and knowledge while contributing to a dynamic, collaborative team. I'm eager to grow professionally and make a meaningful impact through dedication and teamwork. I thrive in environments that challenge me to think critically and adapt quickly, and I value opportunities that foster innovation and shared success. With a strong commitment to personal and organizational growth, I aim to bring energy, curiosity, and reliability to every work I undertake.
+            </p>
+        </div>
+    </section>
+
+    <section id="education">
+        <h2>Education</h2>
+        <div class="education-timeline">
+            <div class="education-card glass">
+                <div class="edu-year">2021-2024</div>
+                <h3>Bachelor of Computer Applications</h3>
+                <p style="color: #00dfd8; margin: 10px 0;">Depaul Arts and Science College, Edathotty</p>
+                <p style="color: #aaa;">Kannur University</p>
+                <p style="color: #7928ca; font-weight: bold; margin-top: 10px;">OGPA: 6.5</p>
+            </div>
+            <div class="education-card glass">
+                <div class="edu-year">2021</div>
+                <h3>Higher Secondary Certificate</h3>
+                <p style="color: #00dfd8; margin: 10px 0;">Santhome Higher Secondary School, Kolakkad</p>
+                <p style="color: #7928ca; font-weight: bold; margin-top: 10px;">Grade: 78%</p>
+            </div>
+            <div class="education-card glass">
+                <div class="edu-year">2019</div>
+                <h3>Secondary School Certificate</h3>
+                <p style="color: #00dfd8; margin: 10px 0;">Santhome Higher Secondary School, Kolakkad</p>
+                <p style="color: #7928ca; font-weight: bold; margin-top: 10px;">Grade: 91%</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="glass" style="padding: 40px; max-width: 900px; margin: 0 auto;">
+            <h3 style="color: #00dfd8; font-size: 1.8rem; margin-bottom: 25px; text-align: center;">BCA Projects</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 15px; margin-bottom: 12px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #00dfd8; border-radius: 10px;">
+                    <h4 style="color: #00dfd8; margin-bottom: 5px; font-size: 1.1rem;">Epharama System</h4>
+                </li>
+                <li style="padding: 15px; margin-bottom: 12px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #7928ca; border-radius: 10px;">
+                    <h4 style="color: #7928ca; margin-bottom: 5px; font-size: 1.1rem;">Homeseeker System</h4>
+                </li>
+                <li style="padding: 15px; margin-bottom: 25px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #ff0080; border-radius: 10px;">
+                    <h4 style="color: #ff0080; margin-bottom: 5px; font-size: 1.1rem;">Nursery System</h4>
+                </li>
+            </ul>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <a href="https://github.com/jobitpttt-coder/BCA.git" target="_blank" class="cta-button" style="text-decoration: none; display: inline-block;">
+                    View BCA Projects
+                </a>
+            </div>
+        </div>
+
+        <div class="glass" style="padding: 40px; max-width: 900px; margin: 50px auto 0;">
+            <h3 style="color: #0070f3; font-size: 1.8rem; margin-bottom: 25px; text-align: center;">Flight Ticket Prediction System</h3>
+            <p style="color: #aaa; line-height: 1.8; text-align: center; margin-bottom: 25px;">
+                A machine learning system that predicts flight ticket prices based on various factors like route, date, airline, and more.
+            </p>
+            <div style="text-align: center;">
+                <a href="https://github.com/jobitpttt-coder/flightticketprediction.git" target="_blank" class="cta-button" style="text-decoration: none; display: inline-block;">
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificates">
+        <h2>Certificates</h2>
+        <div class="glass" style="padding: 40px; max-width: 900px; margin: 0 auto;">
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 20px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #00dfd8; border-radius: 10px;">
+                    <h3 style="color: #00dfd8; margin-bottom: 8px; font-size: 1.2rem;">Hospital Management System</h3>
+                    <p style="color: #aaa;">Certificate for doing hospital management system with RISS Technology</p>
+                </li>
+                <li style="padding: 20px; margin-bottom: 15px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #7928ca; border-radius: 10px;">
+                    <h3 style="color: #7928ca; margin-bottom: 8px; font-size: 1.2rem;">Prompt Engineering</h3>
+                    <p style="color: #aaa;">Certificate for Prompt Engineering</p>
+                </li>
+                <li style="padding: 20px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid #ff0080; border-radius: 10px;">
+                    <h3 style="color: #ff0080; margin-bottom: 8px; font-size: 1.2rem;">IELTS</h3>
+                    <p style="color: #aaa;">Certificate for IELTS</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Skills</h2>
+        <div class="glass" style="padding: 40px; max-width: 1000px; margin: 0 auto;">
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #00dfd8; font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid rgba(0, 223, 216, 0.3);">Technical Skills</h3>
+                <p style="color: #ccc; line-height: 1.8;">DBMS, JAVA, C++, LINUX, PHP, JAVASCRIPT, PYTHON, HTML, MYSQL</p>
+            </div>
+            <div style="margin-bottom: 40px;">
+                <h3 style="color: #7928ca; font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid rgba(121, 40, 202, 0.3);">Soft Skills</h3>
+                <p style="color: #ccc; line-height: 1.8;">TEAM WORK, COMMUNICATION SKILL, OBSERVATION, ACCURACY, BUSINESS KNOWLEDGE, HARD WORKING, PROBLEM-SOLVING ABILITY</p>
+            </div>
+            <div>
+                <h3 style="color: #ff0080; font-size: 1.5rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid rgba(255, 0, 128, 0.3);">Digital Skills</h3>
+                <p style="color: #ccc; line-height: 1.8;">MICROSOFT OFFICE SUITE, EMAIL AND CALENDAR MANAGEMENT, TYPING AND DATA ENTRY, SOCIAL MEDIA HANDLING</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Get In Touch</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="glass" style="padding: 40px; margin-bottom: 40px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center;">
+                    <div>
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">📱</div>
+                        <h3 style="color: #00dfd8; margin-bottom: 10px;">Phone</h3>
+                        <a href="tel:8590420027" style="color: #aaa; text-decoration: none; transition: color 0.3s;">8590420027</a>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">📧</div>
+                        <h3 style="color: #00dfd8; margin-bottom: 10px;">Email</h3>
+                        <a href="mailto:jobitpttt@gmail.com" style="color: #aaa; text-decoration: none; transition: color 0.3s;">jobitpttt@gmail.com</a>
+                    </div>
+                    <div>
+                        <div style="font-size: 2.5rem; margin-bottom: 10px;">💼</div>
+                        <h3 style="color: #00dfd8; margin-bottom: 10px;">LinkedIn</h3>
+                        <a href="https://www.linkedin.com/in/jobit-p-thomas" target="_blank" style="color: #aaa; text-decoration: none; transition: color 0.3s;">Connect with me</a>
+                    </div>
+                </div>
+            </div>
+            <div class="rgb-border">
+                <div class="rgb-border-inner">
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create floating particles
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.body.appendChild(particle);
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Form submission
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Message sent! (This is a demo)');
+            this.reset();
+        });
+
+        // CTA button click
+        document.querySelector('.hero .cta-button').addEventListener('click', function() {
+            document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
